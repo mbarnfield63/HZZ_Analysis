@@ -22,7 +22,7 @@ tuple_path = "https://atlas-opendata.web.cern.ch/atlas-opendata/samples/2020/4le
 def get_data_from_files(samples):
     data = {} # define empty dictionary to hold awkward arrays
     for s in samples: # loop over samples
-        print('Processing '+s+' samples') # print which sample
+        #print('Processing '+s+' samples') # print which sample
         frames = [] # define empty list to hold data
         for val in samples[s]['list']: # loop over each file
             if s == 'data': prefix = "Data/" # Data prefix
@@ -76,7 +76,7 @@ def cut_lep_type(lep_type):
 
 def read_file(path,sample):
     start = time.time() # start the clock
-    print("\tProcessing: "+sample) # print which sample is being processed
+    #print("\tProcessing: "+sample) # print which sample is being processed
     data_all = [] # define empty list to hold all data for this sample
     
     # open the tree called mini using a context manager (will automatically close files/resources)
@@ -119,7 +119,7 @@ def read_file(path,sample):
             nOut = len(data) # number of events passing cuts in this batch
             data_all.append(data) # append array from this batch
             elapsed = time.time() - start # time taken to process
-            print("\t\t nIn: "+str(nIn)+",\t nOut: \t"+str(nOut)+"\t in "+str(round(elapsed,1))+"s") # events before and after
+            #print("\t\t nIn: "+str(nIn)+",\t nOut: \t"+str(nOut)+"\t in "+str(round(elapsed,1))+"s") # events before and after
     
     return ak.concatenate(data_all) # return array containing events passing all cuts
 
@@ -235,7 +235,7 @@ def plot_data(data, samples):
     lumi_used = str(lumi*fraction) # luminosity to write on the plot
     plt.text(0.05, # x
              0.82, # y
-             '$\sqrt{s}$=13 TeV,$\int$L dt = '+lumi_used+' fb$^{-1}$', # text
+             r'$\sqrt{s}$=13 TeV,$\int$L dt = '+lumi_used+' fb$^{-1}$', # text
              transform=main_axes.transAxes ) # coordinate system used is that of main_axes
     
     # Add a label for the analysis carried out
@@ -247,6 +247,6 @@ def plot_data(data, samples):
     # draw the legend
     main_axes.legend( frameon=False ) # no box around the legend
     
-    plt.savefig('HZZ_Plot.png')
+    plt.savefig('/path/in/container/HZZ_Plot.png')
 
     return

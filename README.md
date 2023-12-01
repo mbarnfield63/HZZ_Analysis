@@ -6,3 +6,11 @@ This computing project focused on turning one of the open data notebooks into a 
 
 The original jupyter notebook can be found within the repository this work is based on:
 [https://github.com/atlas-outreach-data-tools/notebooks-collection-opendata.git](https://github.com/atlas-outreach-data-tools/notebooks-collection-opendata.git)
+
+## Running
+Build the file using:
+'''docker image build -t hzz .'''
+Run the image using:
+'''docker run -v -P -d .:/path/in/container hzz'''
+
+(assuming you're in the directory of the Dockerfile)
