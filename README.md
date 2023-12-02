@@ -9,8 +9,8 @@ The original jupyter notebook can be found within the repository this work is ba
 
 ## Running
 Build the file using:
-'''docker image build -t hzz .'''
+`docker image build -t hzz .`
 Run the image using:
-'''docker run -v -P -d .:/path/in/container hzz'''
+`docker run -v -P -d .:/path/in/container hzz`
 
 (assuming you're in the directory of the Dockerfile)
