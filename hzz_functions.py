@@ -4,6 +4,7 @@ import awkward as ak # to represent nested data in columnar format
 import vector # for 4-momentum calculations
 import time # to measure time to analyse
 import numpy as np # for numerical calculations such as histogramming
+import json # for reading .json sample file
 import matplotlib.pyplot as plt # for plotting
 from matplotlib.ticker import AutoMinorLocator # for minor ticks
 
@@ -34,6 +35,11 @@ def get_data_from_files(samples):
         data[s] = ak.concatenate(frames) # dictionary entry is concatenated awkward arrays
     
     return data # return dictionary of awkward arrays
+
+def get_samples():
+    with open('samples.json') as json_file:
+        samples = json.load(json_file)
+    return samples
 
 def calc_weight(xsec_weight, events):
     return (
