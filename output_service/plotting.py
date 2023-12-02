@@ -4,6 +4,10 @@ import numpy as np # for numerical calculations such as histogramming
 import matplotlib.pyplot as plt # for plotting
 from matplotlib.ticker import AutoMinorLocator # for minor ticks
 
+def get_samples():
+    with open('samples.json') as json_file:
+        samples = json.load(json_file)
+    return samples
 
 def plot_data(data, samples):
 
