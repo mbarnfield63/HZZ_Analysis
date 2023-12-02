@@ -1,0 +1,38 @@
+version: latest
+
+services:
+  
+  operator:
+    image: placeholder-image
+    volumes:
+      - shared_data:/app/data
+    networks:
+      - my_network
+
+  worker1:
+    image: placeholder-image
+    volumes:
+      - shared_data:/app/data
+    networks:
+      - my_network
+
+  worker2:
+    image: placeholder-image
+    volumes:
+      - shared_data:/app/data
+    networks:
+      - my_network
+
+  output:
+    image: placeholder-image
+    volumes:
+      - shared_data:/app/data
+    networks:
+      - my_network
+
+volumes:
+  shared_data: '.' # This will mount the current directory as a volume
+
+networks:
+  my_network: # This will create a network called `my_network`
+    driver: bridge
