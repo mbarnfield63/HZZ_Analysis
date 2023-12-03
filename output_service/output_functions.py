@@ -1,6 +1,7 @@
 import awkward as ak # to represent nested data in columnar format
 import time # to measure time to analyse
 import numpy as np # for numerical calculations such as histogramming
+import json # to read json files
 import matplotlib.pyplot as plt # for plotting
 from matplotlib.ticker import AutoMinorLocator # for minor ticks
 
