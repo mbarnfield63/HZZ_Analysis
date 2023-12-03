@@ -5,6 +5,10 @@ import json # to read json files
 import matplotlib.pyplot as plt # for plotting
 from matplotlib.ticker import AutoMinorLocator # for minor ticks
 
+# Variables & Units
+MeV = 0.001
+GeV = 1.0
+
 def get_samples():
     with open('samples.json') as json_file:
         samples = json.load(json_file)

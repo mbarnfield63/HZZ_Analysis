@@ -5,6 +5,11 @@ import time
 import vector
 import numpy as np
 
+# Variables & Units
+MeV = 0.001
+GeV = 1.0
+lumi = 10
+fraction = 1.0
 
 def calc_weight(xsec_weight, events):
     return (
