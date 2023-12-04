@@ -2,4 +2,4 @@ FROM python:latest
 ADD  output_service.py output_functions.py samples.json ./
 #ADD output_service/output_service.py output_service/output_functions.py samples.json ./
 RUN pip install --upgrade awkward numpy matplotlib pika
-CMD ["python", "./output_functions.py"]
+CMD ["python", "./output_service.py"]

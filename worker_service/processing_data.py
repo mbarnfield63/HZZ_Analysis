@@ -23,15 +23,14 @@ def callback(ch, method, properties, body):
     # Acknowledge the message
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
-    # name of file arrives
-    data_name = worker_functions.read_file(body)
-
+    # process the data
+    data = worker_functions.read_file(body)
     print(f'Processed {str(body)}')
     
-    # # Send the awkward array to the output queue
-    ch.basic_publish(exchange='', routing_key='output_queue', body=json.dumps(data.tolist()))
+    # Send the awkward array to the output queue
+    ch.basic_publish(exchange='', routing_key='data_output', body=data)
 
-    print(f"Worker published {str(body)}")
+    print(f"Worker sent {str(body)}")
 
 # Set up a callback function to handle incoming messages
 # Set auto_ack=False to enable manual acknowledgment

@@ -4,6 +4,7 @@ import uproot
 import time
 import vector
 import numpy as np
+import json
 
 # Variables & Units
 MeV = 0.001
@@ -105,7 +106,7 @@ def read_file(message):
             #print("\t\t nIn: "+str(nIn)+",\t nOut: \t"+str(nOut)+"\t in "+str(round(elapsed,1))+"s") # events before and after
     
     data = ak.concatenate(data_all) # return array containing events passing all cuts
-    data_list = data.to_list()
-    data_val = data_list.append(sample) # append sample name to array
-    
-    return data_val
+    serialised_data = ak.to_list(data)
+    serialised_data.append(sample)
+    json_data = json.dumps(serialised_data)
+    return json_data
