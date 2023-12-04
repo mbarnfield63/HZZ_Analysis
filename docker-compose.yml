@@ -17,24 +17,36 @@ services:
       dockerfile: ./operator_service/Dockerfile
     networks: 
       - rabbit
+    stdin_open: true
+    tty: true
+    depends_on:
+      - rabbitmq
 
-  worker1:
+  worker:
     image: 127.0.0.1:5000/worker
     build: 
       context: ./
       dockerfile: ./worker_service/Dockerfile
     networks: 
       - rabbit
+    stdin_open: true
+    tty: true
+    depends_on:
+      - rabbitmq
 
-  # output:
-  #   image: 127.0.0.1:5000/output
-  #   build:
-  #     context: ./
-  #     dockerfile: ./output_service/Dockerfile
-  #   volumes: 
-  #     - .:/app/data
-  #   networks: 
-  #     - my_network
+  output:
+    image: 127.0.0.1:5000/output
+    build:
+      context: ./
+      dockerfile: ./output_service/Dockerfile
+    volumes: 
+      - .:/app/data
+    networks: 
+      - rabbit
+    stdin_open: true
+    tty: true
+    depends_on:
+      - rabbitmq
 
 networks:
   rabbit: # This will create a network called `my_network`
