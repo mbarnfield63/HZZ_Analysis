@@ -21,6 +21,7 @@ services:
     tty: true
     depends_on:
       - rabbitmq
+#    command: ["bash", "-c", "./wait_for_rabbitmq.sh && exec python /operator_run.py"]
 
   worker:
     image: 127.0.0.1:5000/worker
@@ -33,6 +34,7 @@ services:
     tty: true
     depends_on:
       - rabbitmq
+    # command: ["/wait_for_rabbitmq.sh", "&&", "python", "/processing_data.py"]
 
   output:
     image: 127.0.0.1:5000/output
@@ -47,6 +49,7 @@ services:
     tty: true
     depends_on:
       - rabbitmq
+    # command: ["/wait_for_rabbitmq.sh", "&&", "python", "/output_service.py"]
 
 networks:
   rabbit: # This will create a network called `my_network`

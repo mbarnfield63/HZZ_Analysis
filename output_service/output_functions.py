@@ -17,6 +17,13 @@ def get_samples():
         samples = json.load(json_file)
     return samples
 
+def data_expected(samples):
+    count = 0
+    for key, value in samples.items():
+        if isinstance(value, dict) and "list" in value:
+            count += len(value["list"])
+    return count
+
 def decompress_json(compressed_data):
     return zlib.decompress(compressed_data)
 
@@ -149,6 +156,6 @@ def plot_data(data, samples):
     # draw the legend
     main_axes.legend( frameon=False ) # no box around the legend
     
-    plt.savefig('/app/data/HZZ_Plot.png')
+    plt.savefig(f'/app/data/HZZ_Plot_{time.time()}.png')
 
     return

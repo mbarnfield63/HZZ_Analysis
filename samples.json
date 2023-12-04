@@ -8,7 +8,8 @@
     }, 
     "Background $ZZ^*$": {
         "list": ["llll"], 
-        "color": "#ff0000"}, 
+        "color": "#ff0000"
+    }, 
     "Signal ($m_H$ = 125 GeV)": {
         "list": ["ggH125_ZZ4lep", "VBFH125_ZZ4lep", "WH125_ZZ4lep", "ZH125_ZZ4lep"], 
         "color": "#00cdff"
