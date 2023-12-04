@@ -5,6 +5,7 @@ import time
 import vector
 import numpy as np
 import json
+import zlib
 
 # Variables & Units
 MeV = 0.001
@@ -109,4 +110,6 @@ def read_file(message):
     serialised_data = ak.to_list(data)
     serialised_data.append(sample)
     json_data = json.dumps(serialised_data)
-    return json_data
+
+    compressed_data = zlib.compress(json_data.encode('utf-8'))
+    return compressed_data
