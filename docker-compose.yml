@@ -2,44 +2,6 @@ version: latest
 
 services:
 
-  operator:
-    image: operator
-    build: 
-      context: ./
-      dockerfile: ./operator_service/Dockerfile
-    networks: 
-      - my_network
-
-  worker1:
-    image: worker
-    build: 
-      context: ./
-      dockerfile: ./worker_service/Dockerfile
-    volumes: 
-      - .:/app/data
-    networks: 
-      - my_network
-
-  worker2:
-    image: worker
-    build:
-      context: ./
-      dockerfile: ./worker_service/Dockerfile
-    volumes: 
-      - .:/app/data
-    networks: 
-      - my_network
-
-  # output:
-  #   image: output
-  #   build:
-  #     context: ./
-  #     dockerfile: ./output_service/Dockerfile
-  #   volumes: 
-  #     - .:/app/data
-  #   networks: 
-  #     - my_network
-
   rabbitmq:
     image: rabbitmq:3-management
     ports:
@@ -48,6 +10,33 @@ services:
     networks:
       - my_network
 
+  operator:
+    image: 127.0.0.1:5000/operator
+    build: 
+      context: ./
+      dockerfile: ./operator_service/Dockerfile
+    networks: 
+      - my_network
+
+  worker1:
+    image: 127.0.0.1:5000/worker
+    build: 
+      context: ./
+      dockerfile: ./worker_service/Dockerfile
+    networks: 
+      - my_network
+
+  # output:
+  #   image: 127.0.0.1:5000/output
+  #   build:
+  #     context: ./
+  #     dockerfile: ./output_service/Dockerfile
+  #   volumes: 
+  #     - .:/app/data
+  #   networks: 
+  #     - my_network
+
 networks:
   my_network: # This will create a network called `my_network`
-    driver: bridge
+    driver: overlay
+    attachable: true
