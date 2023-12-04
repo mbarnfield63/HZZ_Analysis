@@ -4,6 +4,7 @@ import numpy as np # for numerical calculations such as histogramming
 import json # to read json files
 import matplotlib.pyplot as plt # for plotting
 from matplotlib.ticker import AutoMinorLocator # for minor ticks
+import zlib
 
 # Variables & Units
 MeV = 0.001
@@ -15,6 +16,14 @@ def get_samples():
     with open('samples.json') as json_file:
         samples = json.load(json_file)
     return samples
+
+def decompress_json(compressed_data):
+    return zlib.decompress(compressed_data)
+
+def json_to_awk(decompressed_json):
+    serialised_data = json.loads(decompressed_json.decode('utf-8'))
+    data = ak.from_iter(serialised_data)
+    return data
 
 def plot_data(data, samples):
 
