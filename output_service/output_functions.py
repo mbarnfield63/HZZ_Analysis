@@ -8,6 +8,8 @@ from matplotlib.ticker import AutoMinorLocator # for minor ticks
 # Variables & Units
 MeV = 0.001
 GeV = 1.0
+lumi = 10
+fraction = 1.0
 
 def get_samples():
     with open('samples.json') as json_file:
@@ -138,6 +140,6 @@ def plot_data(data, samples):
     # draw the legend
     main_axes.legend( frameon=False ) # no box around the legend
     
-    plt.savefig('/path/in/container/HZZ_Plot.png')
+    plt.savefig('/app/data/HZZ_Plot.png')
 
     return

@@ -1,37 +1,52 @@
 version: latest
 
 services:
-  
+
   operator:
-    image: placeholder-image
-    volumes:
-      - shared_data:/app/data
-    networks:
+    image: operator
+    build: 
+      context: ./
+      dockerfile: ./operator_service/Dockerfile
+    networks: 
       - my_network
 
   worker1:
-    image: placeholder-image
-    volumes:
-      - shared_data:/app/data
-    networks:
+    image: worker
+    build: 
+      context: ./
+      dockerfile: ./worker_service/Dockerfile
+    volumes: 
+      - .:/app/data
+    networks: 
       - my_network
 
   worker2:
-    image: placeholder-image
-    volumes:
-      - shared_data:/app/data
-    networks:
+    image: worker
+    build:
+      context: ./
+      dockerfile: ./worker_service/Dockerfile
+    volumes: 
+      - .:/app/data
+    networks: 
       - my_network
 
-  output:
-    image: placeholder-image
-    volumes:
-      - shared_data:/app/data
+  # output:
+  #   image: output
+  #   build:
+  #     context: ./
+  #     dockerfile: ./output_service/Dockerfile
+  #   volumes: 
+  #     - .:/app/data
+  #   networks: 
+  #     - my_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     networks:
       - my_network
-
-volumes:
-  shared_data: '.' # This will mount the current directory as a volume
 
 networks:
   my_network: # This will create a network called `my_network`

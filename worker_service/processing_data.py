@@ -3,9 +3,8 @@ import pika
 import json
 import awkward as ak
 
-
 # Connect to RabbitMQ server
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
 channel = connection.channel()
 
 # Declare the data processing queue
@@ -20,13 +19,17 @@ def callback(ch, method, properties, body):
     # URL arrives
     data_url = worker_functions.process_data(body)
     
-    # acknowledge the message
+    # Acknowledge the message
     ch.basic_ack(delivery_tag=method.delivery_tag)
     
+    print(f"Worker received: {data_url}")
+
     data = worker_functions.read_file(data_url)
 
     # Send the awkward array to the output queue
     ch.basic_publish(exchange='', routing_key='output_queue', body=json.dumps(data.tolist()))
+
+    print(f"Worker published.")
 
 # Set up a callback function to handle incoming messages
 # Set auto_ack=False to enable manual acknowledgment
