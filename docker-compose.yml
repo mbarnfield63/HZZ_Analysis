@@ -8,7 +8,7 @@ services:
       - "5672:5672"
       - "15672:15672"
     networks:
-      - my_network
+      - rabbit
 
   operator:
     image: 127.0.0.1:5000/operator
@@ -16,7 +16,7 @@ services:
       context: ./
       dockerfile: ./operator_service/Dockerfile
     networks: 
-      - my_network
+      - rabbit
 
   worker1:
     image: 127.0.0.1:5000/worker
@@ -24,7 +24,7 @@ services:
       context: ./
       dockerfile: ./worker_service/Dockerfile
     networks: 
-      - my_network
+      - rabbit
 
   # output:
   #   image: 127.0.0.1:5000/output
@@ -37,6 +37,5 @@ services:
   #     - my_network
 
 networks:
-  my_network: # This will create a network called `my_network`
-    driver: overlay
-    attachable: true
+  rabbit: # This will create a network called `my_network`
+    driver: bridge

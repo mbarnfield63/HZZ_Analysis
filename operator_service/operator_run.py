@@ -2,7 +2,7 @@ import pika
 import operator_functions
 
 samples = operator_functions.get_samples() # retrieve samples dict
-list_urls = operator_functions.list_samples(samples) # retrieve list of samples
+list_urls = operator_functions.get_file_names(samples) # retrieve list of samples
 
 # Establish connection to the RabbitMQ server
 connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))

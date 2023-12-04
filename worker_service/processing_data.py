@@ -13,30 +13,29 @@ channel.queue_declare(queue='data_processing')
 # Declare the data output queue
 channel.queue_declare(queue='data_output')
 
+# Set QoS to limit the number of unacknowledged messages to 1
+channel.basic_qos(prefetch_count=1)
+
 # Define callback function
 def callback(ch, method, properties, body):
-            
-    # URL arrives
-    data_url = worker_functions.process_data(body)
-    
+
+    print(f"Worker received: {str(body)}")        
     # Acknowledge the message
     ch.basic_ack(delivery_tag=method.delivery_tag)
+
+    # name of file arrives
+    data_name = worker_functions.read_file(body)
+
+    print(f'Processed {str(body)}')
     
-    print(f"Worker received: {data_url}")
-
-    # data = worker_functions.read_file(data_url)
-
     # # Send the awkward array to the output queue
-    # ch.basic_publish(exchange='', routing_key='output_queue', body=json.dumps(data.tolist()))
+    ch.basic_publish(exchange='', routing_key='output_queue', body=json.dumps(data.tolist()))
 
-    # print(f"Worker published.")
+    print(f"Worker published {str(body)}")
 
 # Set up a callback function to handle incoming messages
 # Set auto_ack=False to enable manual acknowledgment
-channel.basic_consume(queue='data_queue', on_message_callback=callback, auto_ack=False)
-
-# Set QoS to limit the number of unacknowledged messages to 1
-channel.basic_qos(prefetch_count=1)
+channel.basic_consume(queue='data_processing', on_message_callback=callback)
 
 # Start listening for messages
 print('Waiting for messages. To exit press CTRL+C')

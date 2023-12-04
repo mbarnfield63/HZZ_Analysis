@@ -10,6 +10,7 @@ MeV = 0.001
 GeV = 1.0
 lumi = 10
 fraction = 1.0
+tuple_path = "https://atlas-opendata.web.cern.ch/atlas-opendata/samples/2020/4lep/"
 
 def calc_weight(xsec_weight, events):
     return (
@@ -50,7 +51,13 @@ def cut_lep_type(lep_type):
     sum_lep_type = lep_type[:, 0] + lep_type[:, 1] + lep_type[:, 2] + lep_type[:, 3]
     return (sum_lep_type != 44) & (sum_lep_type != 48) & (sum_lep_type != 52)
 
-def read_file(path,sample):
+def read_file(message):
+    message = message.decode('utf-8')
+    prefix = message.split()[0] # get prefix from message
+    sample = message.split()[1] # get sample name from message
+
+    path = tuple_path+prefix+sample+".4lep.root"
+
     start = time.time() # start the clock
     #print("\tProcessing: "+sample) # print which sample is being processed
     data_all = [] # define empty list to hold all data for this sample
@@ -97,4 +104,8 @@ def read_file(path,sample):
             elapsed = time.time() - start # time taken to process
             #print("\t\t nIn: "+str(nIn)+",\t nOut: \t"+str(nOut)+"\t in "+str(round(elapsed,1))+"s") # events before and after
     
-    return ak.concatenate(data_all) # return array containing events passing all cuts
+    data = ak.concatenate(data_all) # return array containing events passing all cuts
+    data_list = data.to_list()
+    data_val = data_list.append(sample) # append sample name to array
+    
+    return data_val
