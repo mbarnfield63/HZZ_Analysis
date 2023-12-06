@@ -11,7 +11,7 @@ import zlib
 MeV = 0.001
 GeV = 1.0
 lumi = 10
-fraction = 1.0
+fraction = 0.1
 tuple_path = "https://atlas-opendata.web.cern.ch/atlas-opendata/samples/2020/4lep/"
 
 def calc_weight(xsec_weight, events):

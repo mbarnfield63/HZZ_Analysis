@@ -1,7 +1,5 @@
 import worker_functions
 import pika
-import json
-import awkward as ak
 
 # Connect to RabbitMQ server
 connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
@@ -20,7 +18,7 @@ channel.basic_qos(prefetch_count=1)
 
 # Define callback function
 def callback(ch, method, properties, body):
-
+    channel.basic_ack(delivery_tag=method.delivery_tag)
     print(f"Worker received: {str(body)}")        
     
     # process the data
@@ -34,8 +32,8 @@ def callback(ch, method, properties, body):
 
 # Set up a callback function to handle incoming messages
 # Set auto_ack=False to enable manual acknowledgment
-channel.basic_consume(queue='data_processing', auto_ack=True, on_message_callback=callback)
+channel.basic_consume(queue='data_processing', auto_ack=False, on_message_callback=callback)
 
 # Start listening for messages
-print('Waiting for messages. To exit press CTRL+C')
+print('[*] Waiting for messages. To exit press CTRL+C')
 channel.start_consuming()

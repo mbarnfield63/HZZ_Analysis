@@ -10,7 +10,7 @@ import zlib
 MeV = 0.001
 GeV = 1.0
 lumi = 10
-fraction = 1.0
+fraction = 0.1
 
 #TEMP
 def print_shapes(data, prefix=""):
