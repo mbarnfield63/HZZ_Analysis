@@ -8,19 +8,21 @@ The original jupyter notebook can be found within the repository this work is ba
 [https://github.com/atlas-outreach-data-tools/notebooks-collection-opendata.git](https://github.com/atlas-outreach-data-tools/notebooks-collection-opendata.git)
 
 ## Build Images
-Build the respective image files using:
+Build each respective image (operator, worker, output) using:
 
-`docker image build -t [name] .`
-
-for each image, i.e., Operator, Worker, and Output.
-
+  `docker image build -t [name] .`
 
 ## Setup network
-Create network first: `docker network create rabbit`
+Create network first: 
 
-Start RabbitMQ broker (attaching 'rabbit' network): `docker run --rm -d -p 15672:15672 -p 5672:5672 --network rabbit --name rabbitmq rabbitmq:3-management`
+  `docker network create rabbit`
+
+Start RabbitMQ broker (attaching 'rabbit' network): 
+
+  `docker run --rm -d -p 15672:15672 -p 5672:5672 --network rabbit --name rabbitmq rabbitmq:3-management`
 
 
 ## Run containers on network
-Run output, then worker, then operator last using:
-`docker run --rm -it --network rabbit [output/worker/operator]`
+Wait until RabbitMQ server is fully initialised, then run all containers using:
+
+  `docker run --rm -it --network rabbit [output/worker/operator]`
