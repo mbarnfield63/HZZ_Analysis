@@ -1,0 +1,64 @@
+version: latest
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - rabbit
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  operator:
+    image: operator
+    build: 
+      context: ./
+      dockerfile: ./operator_service/Dockerfile
+    networks: 
+      - rabbit
+    stdin_open: true
+    tty: true
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+        restart: true
+
+  worker:
+    image: worker
+    build: 
+      context: ./
+      dockerfile: ./worker_service/Dockerfile
+    networks: 
+      - rabbit
+    stdin_open: true
+    tty: true
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+        restart: true      
+
+  output:
+    image: output
+    build:
+      context: ./
+      dockerfile: ./output_service/Dockerfile
+    volumes: 
+      - .:/app/data
+    networks: 
+      - rabbit
+    stdin_open: true
+    tty: true
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+        restart: true
+
+networks:
+  rabbit: # This will create a network called `my_network`
+    driver: bridge
