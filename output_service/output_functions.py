@@ -12,6 +12,18 @@ GeV = 1.0
 lumi = 10
 fraction = 1.0
 
+#TEMP
+def print_shapes(data, prefix=""):
+    if isinstance(data, dict):
+        for key, value in data.items():
+            print_shapes(value, prefix + f"['{key}']")
+    elif isinstance(data, ak.Array):
+        print(f"Type{prefix}: {data.type}")
+        print(f"Shape{prefix}: {ak.num(data, axis=0)}")  # Assuming you want the length along the first axis
+    else:
+        print(f"Unknown type{prefix}: {type(data)}")
+
+
 def get_samples():
     with open('samples.json') as json_file:
         samples = json.load(json_file)

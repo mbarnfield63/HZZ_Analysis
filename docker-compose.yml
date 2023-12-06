@@ -9,9 +9,14 @@ services:
       - "15672:15672"
     networks:
       - rabbit
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
 
   operator:
-    image: 127.0.0.1:5000/operator
+    image: operator
     build: 
       context: ./
       dockerfile: ./operator_service/Dockerfile
@@ -20,11 +25,12 @@ services:
     stdin_open: true
     tty: true
     depends_on:
-      - rabbitmq
-#    command: ["bash", "-c", "./wait_for_rabbitmq.sh && exec python /operator_run.py"]
+      rabbitmq:
+        condition: service_healthy
+        restart: true
 
   worker:
-    image: 127.0.0.1:5000/worker
+    image: worker
     build: 
       context: ./
       dockerfile: ./worker_service/Dockerfile
@@ -32,12 +38,16 @@ services:
       - rabbit
     stdin_open: true
     tty: true
+    deploy:
+      mode: replicated
+      replicas: 2
     depends_on:
-      - rabbitmq
-    # command: ["/wait_for_rabbitmq.sh", "&&", "python", "/processing_data.py"]
+      rabbitmq:
+        condition: service_healthy
+        restart: true      
 
   output:
-    image: 127.0.0.1:5000/output
+    image: output
     build:
       context: ./
       dockerfile: ./output_service/Dockerfile
@@ -48,8 +58,9 @@ services:
     stdin_open: true
     tty: true
     depends_on:
-      - rabbitmq
-    # command: ["/wait_for_rabbitmq.sh", "&&", "python", "/output_service.py"]
+      rabbitmq:
+        condition: service_healthy
+        restart: true
 
 networks:
   rabbit: # This will create a network called `my_network`

@@ -108,8 +108,8 @@ def read_file(message):
     
     data = ak.concatenate(data_all) # return array containing events passing all cuts
     serialised_data = ak.to_list(data)
-    serialised_data.append(sample)
-    json_data = json.dumps(serialised_data)
+    data_with_identifier = {'data_name': sample, 'data': serialised_data}
+    json_data = json.dumps(data_with_identifier)
 
     compressed_data = zlib.compress(json_data.encode('utf-8'))
     return compressed_data
