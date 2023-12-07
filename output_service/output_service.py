@@ -37,7 +37,7 @@ def callback(ch, method, properties, body):
     
 
 # Connect to RabbitMQ server
-connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
+connection = output_functions.rabbitmq_connection('rabbitmq')
 channel = connection.channel()
 
 # Declare the data output queue
