@@ -1,5 +1,16 @@
+import pika
+import time
 import json
 import infofile
+
+def rabbitmq_connection(host, retries=10, delay=5):
+    for i in range(retries):
+        try:
+            return pika.BlockingConnection(pika.ConnectionParameters(host=host))
+        except pika.exceptions.AMQPConnectionError:
+            print(f"Failed to connect to server, retrying in {delay} seconds...")
+            time.sleep(delay)
+    raise Exception("Failed to connect to RabbitMQ")
 
 def get_samples():
     with open('samples.json') as json_file:

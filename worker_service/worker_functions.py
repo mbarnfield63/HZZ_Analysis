@@ -1,3 +1,4 @@
+import pika
 import infofile # import infofile.py to get cross-sections and sum of weights
 import awkward as ak
 import uproot
@@ -11,8 +12,17 @@ import zlib
 MeV = 0.001
 GeV = 1.0
 lumi = 10
-fraction = 0.1
+fraction = 1.0
 tuple_path = "https://atlas-opendata.web.cern.ch/atlas-opendata/samples/2020/4lep/"
+
+def rabbitmq_connection(host, retries=10, delay=5):
+    for i in range(retries):
+        try:
+            return pika.BlockingConnection(pika.ConnectionParameters(host=host))
+        except pika.exceptions.AMQPConnectionError:
+            print(f"Failed to connect to server, retrying in {delay} seconds...")
+            time.sleep(delay)
+    raise Exception("Failed to connect to RabbitMQ")
 
 def calc_weight(xsec_weight, events):
     return (

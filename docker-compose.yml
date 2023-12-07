@@ -1,4 +1,4 @@
-version: latest
+version: '3.8'
 
 services:
 
@@ -9,11 +9,6 @@ services:
       - "15672:15672"
     networks:
       - rabbit
-    healthcheck:
-      test: rabbitmq-diagnostics -q ping
-      interval: 30s
-      timeout: 30s
-      retries: 3
 
   operator:
     image: operator
@@ -25,9 +20,7 @@ services:
     stdin_open: true
     tty: true
     depends_on:
-      rabbitmq:
-        condition: service_healthy
-        restart: true
+      - rabbitmq
 
   worker:
     image: worker
@@ -38,10 +31,10 @@ services:
       - rabbit
     stdin_open: true
     tty: true
+    deploy:
+      replicas: 2
     depends_on:
-      rabbitmq:
-        condition: service_healthy
-        restart: true      
+      - rabbitmq     
 
   output:
     image: output
@@ -55,9 +48,7 @@ services:
     stdin_open: true
     tty: true
     depends_on:
-      rabbitmq:
-        condition: service_healthy
-        restart: true
+      - rabbitmq
 
 networks:
   rabbit: # This will create a network called `my_network`

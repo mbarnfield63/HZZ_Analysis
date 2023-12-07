@@ -1,3 +1,4 @@
+import pika
 import awkward as ak # to represent nested data in columnar format
 import time # to measure time to analyse
 import numpy as np # for numerical calculations such as histogramming
@@ -10,19 +11,16 @@ import zlib
 MeV = 0.001
 GeV = 1.0
 lumi = 10
-fraction = 0.1
+fraction = 1.0
 
-#TEMP
-def print_shapes(data, prefix=""):
-    if isinstance(data, dict):
-        for key, value in data.items():
-            print_shapes(value, prefix + f"['{key}']")
-    elif isinstance(data, ak.Array):
-        print(f"Type{prefix}: {data.type}")
-        print(f"Shape{prefix}: {ak.num(data, axis=0)}")  # Assuming you want the length along the first axis
-    else:
-        print(f"Unknown type{prefix}: {type(data)}")
-
+def rabbitmq_connection(host, retries=10, delay=5):
+    for i in range(retries):
+        try:
+            return pika.BlockingConnection(pika.ConnectionParameters(host=host))
+        except pika.exceptions.AMQPConnectionError:
+            print(f"Failed to connect to server, retrying in {delay} seconds...")
+            time.sleep(delay)
+    raise Exception("Failed to connect to RabbitMQ")
 
 def get_samples():
     with open('samples.json') as json_file:

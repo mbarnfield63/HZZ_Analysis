@@ -5,7 +5,7 @@ samples = operator_functions.get_samples() # retrieve samples dict
 list_urls = operator_functions.get_file_names(samples) # retrieve list of samples
 
 # Establish connection to the RabbitMQ server
-connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
+connection = operator_functions.rabbitmq_connection('rabbitmq')
 channel = connection.channel()
 
 # Declare the data processing queue

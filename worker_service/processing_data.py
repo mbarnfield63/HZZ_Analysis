@@ -2,7 +2,7 @@ import worker_functions
 import pika
 
 # Connect to RabbitMQ server
-connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq'))
+connection = worker_functions.rabbitmq_connection('rabbitmq')
 channel = connection.channel()
 
 # Declare the data processing queue
