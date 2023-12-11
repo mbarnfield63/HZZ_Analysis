@@ -21,6 +21,9 @@ services:
     tty: true
     depends_on:
       - rabbitmq
+    deploy:
+      restart_policy:
+        condition: none
 
   worker:
     image: worker
@@ -49,7 +52,10 @@ services:
     tty: true
     depends_on:
       - rabbitmq
+    deploy:
+      restart_policy:
+        condition: none
 
 networks:
-  rabbit: # This will create a network called `my_network`
-    driver: bridge
+  rabbit: 
+    driver: overlay
