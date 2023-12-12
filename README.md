@@ -11,8 +11,12 @@ The original jupyter notebook can be found within the repository this work is ba
 The user can define what data they wish to include within the plot by modifying the samples.json file in the main directory.
 
 ## Run
-The number of workers can be defined within the [docker-compose file](https://github.com/mbarnfield63/HZZ_Analysis/blob/master/docker-compose.yml).
+The number of workers for the swarm can be defined within the [docker-compose file](https://github.com/mbarnfield63/HZZ_Analysis/blob/master/docker-compose.yml).
 
-All building of the images, and running the services can be achieved using simply `docker compose up`.
+Functions for swarm mode:
+- Initialise swarm functionality using: `docker swarm init`
+- Start the swarm using: `docker stack deploy -c docker-compose.yml <stack_name>`
+- Add/remove workers using: `docker service scale worker=<number>`
+- Restart/update operator & output using: `docker service update --image <new_image> <service_name>`
 
 The plot will be saved within the directory this is run from (example plot shown in directory).
